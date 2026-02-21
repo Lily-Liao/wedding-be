@@ -1,0 +1,96 @@
+spring:
+  application:
+    name: wedding-backend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/wedding_bot?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Taipei&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    default-locale: zh_TW
+    fallback-to-system-locale: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: Asia/Taipei
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+
+server:
+  port: 222
+  servlet:
+    context-path: /
+
+line:
+  bot:
+    channel-token: ${LINE_CHANNEL_ACCESS_TOKEN:your-line-channel-access-token}
+    channel-secret: ${LINE_CHANNEL_SECRET:your-line-channel-secret}
+    # The SDK's built-in controller will expose this path for the webhook
+    handler:
+      path: /webhook
+
+cloudflare:
+  r2:
+    account-id: ${R2_ACCOUNT_ID:your-account-id}
+    access-key-id: ${R2_ACCESS_KEY_ID:your-access-key-id}
+    secret-access-key: ${R2_SECRET_ACCESS_KEY:your-secret-access-key}
+    bucket-name: ${R2_BUCKET_NAME:wedding-media}
+    public-url: ${R2_PUBLIC_URL:https://your-r2-public-url}
+    presign-expiry-minutes: 60
+
+cors:
+  allowed-origins:
+    - ${CORS_ALLOWED_ORIGIN_1:http://localhost:3000}
+
+logging:
+  level:
+    com.wedding.backend: DEBUG
+    org.springframework.web: INFO
+    org.springframework.websocket: INFO
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
