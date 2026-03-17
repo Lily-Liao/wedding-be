@@ -1,0 +1,557 @@
+{
+  "scan_date": "2026-03-18",
+  "project_type": "spring-boot",
+  "project_name": "wedding-backend",
+  "spec_type": "backend",
+  "apis": [
+    {
+      "class_name": "MessageController",
+      "file_path": "src/main/java/com/wedding/backend/controller/MessageController.java",
+      "base_path": "/api/messages",
+      "methods": [
+        {
+          "name": "getAllMessages",
+          "http_method": "GET",
+          "path": "",
+          "full_path": "/api/messages",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "ApiResponse<List<MessageResponse>>",
+          "annotations": [],
+          "description": "回傳所有已儲存的應援留言，依建立時間排序，供前端顯示牆輪播使用。"
+        }
+      ]
+    },
+    {
+      "class_name": "VoteController",
+      "file_path": "src/main/java/com/wedding/backend/controller/VoteController.java",
+      "base_path": "",
+      "methods": [
+        {
+          "name": "getVoteOptions",
+          "http_method": "GET",
+          "path": "/api/votes/options",
+          "full_path": "/api/votes/options",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "ApiResponse<VoteOptionResponse>",
+          "annotations": [],
+          "description": "回傳 A~D 四個禮服色系選項，包含各選項目前的票數與百分比，以及 correctAnswer。"
+        },
+        {
+          "name": "updateVotingStatus",
+          "http_method": "PATCH",
+          "path": "/admin/voting-session/status",
+          "full_path": "/admin/voting-session/status",
+          "parameters": [],
+          "request_body": {
+            "type": "VotingStatusRequest",
+            "fields": [{ "name": "status", "type": "VotingSession.Status" }]
+          },
+          "response_type": "ApiResponse<VotingSession>",
+          "annotations": [],
+          "description": "將投票切換為 START（開放）或 CLOSED（結束）。狀態流程 WAITING → START → CLOSED，不可逆轉。"
+        },
+        {
+          "name": "updateVotingOptions",
+          "http_method": "PUT",
+          "path": "/admin/voting-session/options",
+          "full_path": "/admin/voting-session/options",
+          "parameters": [],
+          "request_body": {
+            "type": "List<VotingOptionItem>",
+            "fields": [
+              { "name": "key", "type": "String" },
+              { "name": "label", "type": "String" },
+              { "name": "color", "type": "String" }
+            ]
+          },
+          "response_type": "ApiResponse<VotingSession>",
+          "annotations": [],
+          "description": "自訂 A~D 四個選項的顯示文字與顏色。只有在 WAITING 狀態下才能修改。"
+        }
+      ]
+    },
+    {
+      "class_name": "LuckyDrawController",
+      "file_path": "src/main/java/com/wedding/backend/controller/LuckyDrawController.java",
+      "base_path": "/api/v1",
+      "methods": [
+        {
+          "name": "getEligibleParticipants",
+          "http_method": "GET",
+          "path": "/participants/eligible",
+          "full_path": "/api/v1/participants/eligible",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "ApiResponse<ParticipantResponse>",
+          "annotations": [],
+          "description": "列出目前所有尚未中獎的合格參與者及總人數。"
+        },
+        {
+          "name": "drawWinner",
+          "http_method": "POST",
+          "path": "/winners",
+          "full_path": "/api/v1/winners",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "ApiResponse<WinnerResponse>",
+          "annotations": [],
+          "description": "從抽獎池中隨機抽出一位中獎者，同時將該用戶標記為已中獎。"
+        },
+        {
+          "name": "getAllWinners",
+          "http_method": "GET",
+          "path": "/winners",
+          "full_path": "/api/v1/winners",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "ApiResponse<List<WinnerResponse>>",
+          "annotations": [],
+          "description": "回傳歷次抽獎的完整中獎記錄。"
+        },
+        {
+          "name": "cancelWinner",
+          "http_method": "DELETE",
+          "path": "/winners/{id}",
+          "full_path": "/api/v1/winners/{id}",
+          "parameters": [{ "name": "id", "type": "UUID", "source": "PathVariable" }],
+          "request_body": null,
+          "response_type": "ApiResponse<Void>",
+          "annotations": [],
+          "description": "當中獎者棄權時，將該筆中獎記錄標記為無效，不會重新回到抽獎池。"
+        },
+        {
+          "name": "resetWinners",
+          "http_method": "DELETE",
+          "path": "/winners",
+          "full_path": "/api/v1/winners",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "ApiResponse<Void>",
+          "annotations": [],
+          "description": "清空所有中獎記錄，讓整個抽獎環節可以重來。被抽過的人將重新回到抽獎池。"
+        }
+      ]
+    },
+    {
+      "class_name": "MediaController",
+      "file_path": "src/main/java/com/wedding/backend/controller/MediaController.java",
+      "base_path": "/api/media/schemes",
+      "methods": [
+        {
+          "name": "getAllSchemes",
+          "http_method": "GET",
+          "path": "",
+          "full_path": "/api/media/schemes",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "ApiResponse<List<MediaSchemeResponse>>",
+          "annotations": [],
+          "description": "回傳所有媒體方案及其素材清單，包含排序、可見性與是否為直播中的方案。"
+        },
+        {
+          "name": "createScheme",
+          "http_method": "POST",
+          "path": "",
+          "full_path": "/api/media/schemes",
+          "parameters": [],
+          "request_body": {
+            "type": "MediaSchemeRequest",
+            "fields": [{ "name": "name", "type": "String" }]
+          },
+          "response_type": "ApiResponse<MediaSchemeResponse>",
+          "annotations": [],
+          "description": "建立一個新的空媒體方案。"
+        },
+        {
+          "name": "renameScheme",
+          "http_method": "PUT",
+          "path": "/{id}/rename",
+          "full_path": "/api/media/schemes/{id}/rename",
+          "parameters": [{ "name": "id", "type": "UUID", "source": "PathVariable" }],
+          "request_body": {
+            "type": "MediaSchemeRequest",
+            "fields": [{ "name": "name", "type": "String" }]
+          },
+          "response_type": "ApiResponse<MediaSchemeResponse>",
+          "annotations": [],
+          "description": "修改指定方案的名稱。"
+        },
+        {
+          "name": "deleteScheme",
+          "http_method": "DELETE",
+          "path": "/{id}",
+          "full_path": "/api/media/schemes/{id}",
+          "parameters": [{ "name": "id", "type": "UUID", "source": "PathVariable" }],
+          "request_body": null,
+          "response_type": "ApiResponse<Void>",
+          "annotations": [],
+          "description": "刪除指定方案及其底下所有素材（含 Cloudflare R2 上的檔案）。"
+        },
+        {
+          "name": "setLiveScheme",
+          "http_method": "PUT",
+          "path": "/live",
+          "full_path": "/api/media/schemes/live",
+          "parameters": [],
+          "request_body": {
+            "type": "MediaSchemeIdRequest",
+            "fields": [{ "name": "schemeId", "type": "UUID" }]
+          },
+          "response_type": "ApiResponse<MediaSchemeResponse>",
+          "annotations": [],
+          "description": "切換目前在應援牆輪播的方案，同一時間只有一個方案為 live 狀態。"
+        },
+        {
+          "name": "togglePin",
+          "http_method": "PUT",
+          "path": "/{id}/pin",
+          "full_path": "/api/media/schemes/{id}/pin",
+          "parameters": [{ "name": "id", "type": "UUID", "source": "PathVariable" }],
+          "request_body": null,
+          "response_type": "ApiResponse<MediaSchemeResponse>",
+          "annotations": [],
+          "description": "固定顯示方案中的單一素材（停止輪播）。再次呼叫恢復輪播模式。"
+        },
+        {
+          "name": "presignUpload",
+          "http_method": "POST",
+          "path": "/{id}/items/presign",
+          "full_path": "/api/media/schemes/{id}/items/presign",
+          "parameters": [{ "name": "id", "type": "UUID", "source": "PathVariable" }],
+          "request_body": {
+            "type": "PresignRequest",
+            "fields": [
+              { "name": "fileName", "type": "String" },
+              { "name": "contentType", "type": "String" },
+              { "name": "fileSize", "type": "Long" }
+            ]
+          },
+          "response_type": "ApiResponse<PresignResponse>",
+          "annotations": [],
+          "description": "向 Cloudflare R2 請求預簽章 PUT URL，並在 DB 建立素材記錄。uploadUrl 60 分鐘有效，readUrl 永久有效。"
+        },
+        {
+          "name": "updateItemOrder",
+          "http_method": "PUT",
+          "path": "/{id}/items/order",
+          "full_path": "/api/media/schemes/{id}/items/order",
+          "parameters": [{ "name": "id", "type": "UUID", "source": "PathVariable" }],
+          "request_body": {
+            "type": "ItemOrderRequest",
+            "fields": [{ "name": "itemIds", "type": "List<UUID>" }]
+          },
+          "response_type": "ApiResponse<Void>",
+          "annotations": [],
+          "description": "根據拖拽結果提交新的素材順序。"
+        },
+        {
+          "name": "updateItemVisibility",
+          "http_method": "PATCH",
+          "path": "/{id}/items/{itemId}/visibility",
+          "full_path": "/api/media/schemes/{id}/items/{itemId}/visibility",
+          "parameters": [
+            { "name": "id", "type": "UUID", "source": "PathVariable" },
+            { "name": "itemId", "type": "UUID", "source": "PathVariable" }
+          ],
+          "request_body": {
+            "type": "ItemVisibilityRequest",
+            "fields": [{ "name": "visible", "type": "boolean" }]
+          },
+          "response_type": "ApiResponse<MediaSchemeResponse.MediaItemResponse>",
+          "annotations": [],
+          "description": "控制單一素材是否出現在輪播中，隱藏後不刪除檔案。"
+        },
+        {
+          "name": "deleteItem",
+          "http_method": "DELETE",
+          "path": "/{id}/items/{itemId}",
+          "full_path": "/api/media/schemes/{id}/items/{itemId}",
+          "parameters": [
+            { "name": "id", "type": "UUID", "source": "PathVariable" },
+            { "name": "itemId", "type": "UUID", "source": "PathVariable" }
+          ],
+          "request_body": null,
+          "response_type": "ApiResponse<Void>",
+          "annotations": [],
+          "description": "從方案中移除指定素材，同時刪除 Cloudflare R2 上對應的檔案。"
+        }
+      ]
+    },
+    {
+      "class_name": "LineWebhookController",
+      "file_path": "src/main/java/com/wedding/backend/webhook/LineWebhookController.java",
+      "base_path": "/webhook",
+      "methods": [
+        {
+          "name": "handleTextMessage",
+          "http_method": "WEBHOOK_EVENT",
+          "path": "/webhook",
+          "full_path": "/webhook (MessageEvent)",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "void",
+          "annotations": ["@EventMapping"],
+          "description": "處理 LINE 文字訊息事件。支援 keyword dispatch（留言應援牆/Message Wall）以及 AWAITING_MESSAGE、AWAITING_VOTE 狀態處理。"
+        },
+        {
+          "name": "handlePostbackEvent",
+          "http_method": "WEBHOOK_EVENT",
+          "path": "/webhook",
+          "full_path": "/webhook (PostbackEvent)",
+          "parameters": [],
+          "request_body": null,
+          "response_type": "void",
+          "annotations": ["@EventMapping"],
+          "description": "處理 LINE PostbackEvent（FlexMessage 按鈕投票），驗證選項後記錄投票。"
+        }
+      ]
+    }
+  ],
+  "data_models": [
+    {
+      "class_name": "Message",
+      "table_name": "messages",
+      "fields": [
+        { "name": "id", "java_type": "UUID", "column_name": "id", "constraints": ["PK", "NOT NULL", "char(36)"], "indexed": true },
+        { "name": "lineUserId", "java_type": "String", "column_name": "line_user_id", "constraints": ["NULLABLE", "length=100"], "indexed": false },
+        { "name": "name", "java_type": "String", "column_name": "name", "constraints": ["NULLABLE", "length=255"], "indexed": false },
+        { "name": "content", "java_type": "String", "column_name": "content", "constraints": ["NOT NULL", "TEXT"], "indexed": false },
+        { "name": "createdAt", "java_type": "OffsetDateTime", "column_name": "created_at", "constraints": ["NOT NULL", "@CreationTimestamp"], "indexed": false },
+        { "name": "updatedAt", "java_type": "OffsetDateTime", "column_name": "updated_at", "constraints": ["@UpdateTimestamp"], "indexed": false }
+      ],
+      "relationships": [],
+      "indexes": [],
+      "unique_constraints": []
+    },
+    {
+      "class_name": "VotingSession",
+      "table_name": "voting_sessions",
+      "fields": [
+        { "name": "id", "java_type": "Long", "column_name": "id", "constraints": ["PK", "AUTO_INCREMENT"], "indexed": true },
+        { "name": "status", "java_type": "VotingSession.Status", "column_name": "status", "constraints": ["NOT NULL", "varchar(20)", "@Enumerated(STRING)"], "indexed": false },
+        { "name": "startedAt", "java_type": "OffsetDateTime", "column_name": "started_at", "constraints": ["NULLABLE"], "indexed": false },
+        { "name": "closedAt", "java_type": "OffsetDateTime", "column_name": "closed_at", "constraints": ["NULLABLE"], "indexed": false },
+        { "name": "correctAnswer", "java_type": "String", "column_name": "correct_answer", "constraints": ["NULLABLE", "char(1)"], "indexed": false },
+        { "name": "options", "java_type": "List<VotingOptionItem>", "column_name": "options", "constraints": ["NULLABLE", "json", "@JdbcTypeCode(JSON)"], "indexed": false },
+        { "name": "createdAt", "java_type": "OffsetDateTime", "column_name": "created_at", "constraints": ["NOT NULL", "@CreationTimestamp"], "indexed": false },
+        { "name": "updatedAt", "java_type": "OffsetDateTime", "column_name": "updated_at", "constraints": ["@UpdateTimestamp"], "indexed": false }
+      ],
+      "relationships": [],
+      "indexes": [],
+      "unique_constraints": []
+    },
+    {
+      "class_name": "Vote",
+      "table_name": "votes",
+      "fields": [
+        { "name": "id", "java_type": "UUID", "column_name": "id", "constraints": ["PK", "NOT NULL", "char(36)"], "indexed": true },
+        { "name": "votingSession", "java_type": "VotingSession", "column_name": "voting_session_id", "constraints": ["NOT NULL", "FK → voting_sessions.id"], "indexed": false },
+        { "name": "lineUserId", "java_type": "String", "column_name": "line_user_id", "constraints": ["NOT NULL", "length=100"], "indexed": false },
+        { "name": "lineDisplayName", "java_type": "String", "column_name": "line_display_name", "constraints": ["NULLABLE", "length=255"], "indexed": false },
+        { "name": "optionKey", "java_type": "String", "column_name": "option_key", "constraints": ["NOT NULL", "char(1)"], "indexed": false },
+        { "name": "createdAt", "java_type": "OffsetDateTime", "column_name": "created_at", "constraints": ["NOT NULL", "@CreationTimestamp"], "indexed": false }
+      ],
+      "relationships": [
+        { "type": "ManyToOne", "target": "VotingSession", "join_column": "voting_session_id", "fetch": "LAZY" }
+      ],
+      "indexes": [],
+      "unique_constraints": []
+    },
+    {
+      "class_name": "Winner",
+      "table_name": "winners",
+      "fields": [
+        { "name": "id", "java_type": "UUID", "column_name": "id", "constraints": ["PK", "NOT NULL", "char(36)"], "indexed": true },
+        { "name": "vote", "java_type": "Vote", "column_name": "vote_id", "constraints": ["NOT NULL", "FK → votes.id"], "indexed": false },
+        { "name": "lineUserId", "java_type": "String", "column_name": "line_user_id", "constraints": ["NOT NULL", "length=100"], "indexed": false },
+        { "name": "lineDisplayName", "java_type": "String", "column_name": "line_display_name", "constraints": ["NULLABLE", "length=255"], "indexed": false },
+        { "name": "optionKey", "java_type": "String", "column_name": "option_key", "constraints": ["NOT NULL", "char(1)"], "indexed": false },
+        { "name": "drawnAt", "java_type": "OffsetDateTime", "column_name": "drawn_at", "constraints": ["NOT NULL", "@CreationTimestamp"], "indexed": false },
+        { "name": "cancelledAt", "java_type": "OffsetDateTime", "column_name": "cancelled_at", "constraints": ["NULLABLE"], "indexed": false },
+        { "name": "isActive", "java_type": "Boolean", "column_name": "is_active", "constraints": ["NOT NULL", "default=true"], "indexed": false }
+      ],
+      "relationships": [
+        { "type": "OneToOne", "target": "Vote", "join_column": "vote_id", "fetch": "EAGER" }
+      ],
+      "indexes": [],
+      "unique_constraints": []
+    },
+    {
+      "class_name": "MediaScheme",
+      "table_name": "media_schemes",
+      "fields": [
+        { "name": "id", "java_type": "UUID", "column_name": "id", "constraints": ["PK", "NOT NULL", "char(36)"], "indexed": true },
+        { "name": "name", "java_type": "String", "column_name": "name", "constraints": ["NOT NULL", "length=255"], "indexed": false },
+        { "name": "isLive", "java_type": "Boolean", "column_name": "is_live", "constraints": ["NOT NULL", "default=false"], "indexed": false },
+        { "name": "isPinned", "java_type": "Boolean", "column_name": "is_pinned", "constraints": ["NOT NULL", "default=false"], "indexed": false },
+        { "name": "sortOrder", "java_type": "Integer", "column_name": "sort_order", "constraints": ["NOT NULL", "default=0"], "indexed": false },
+        { "name": "items", "java_type": "List<MediaItem>", "column_name": null, "constraints": ["OneToMany", "CASCADE_ALL", "orphanRemoval"], "indexed": false },
+        { "name": "createdAt", "java_type": "OffsetDateTime", "column_name": "created_at", "constraints": ["NOT NULL", "@CreationTimestamp"], "indexed": false },
+        { "name": "updatedAt", "java_type": "OffsetDateTime", "column_name": "updated_at", "constraints": ["@UpdateTimestamp"], "indexed": false }
+      ],
+      "relationships": [
+        { "type": "OneToMany", "target": "MediaItem", "mapped_by": "scheme", "cascade": "ALL", "fetch": "LAZY" }
+      ],
+      "indexes": [],
+      "unique_constraints": []
+    },
+    {
+      "class_name": "MediaItem",
+      "table_name": "media_items",
+      "fields": [
+        { "name": "id", "java_type": "UUID", "column_name": "id", "constraints": ["PK", "NOT NULL", "char(36)"], "indexed": true },
+        { "name": "scheme", "java_type": "MediaScheme", "column_name": "scheme_id", "constraints": ["NOT NULL", "FK → media_schemes.id"], "indexed": false },
+        { "name": "fileKey", "java_type": "String", "column_name": "file_key", "constraints": ["NOT NULL", "length=500"], "indexed": false },
+        { "name": "readUrl", "java_type": "String", "column_name": "read_url", "constraints": ["NOT NULL", "length=1000"], "indexed": false },
+        { "name": "fileName", "java_type": "String", "column_name": "file_name", "constraints": ["NOT NULL", "length=255"], "indexed": false },
+        { "name": "contentType", "java_type": "String", "column_name": "content_type", "constraints": ["NULLABLE", "length=100"], "indexed": false },
+        { "name": "fileSize", "java_type": "Long", "column_name": "file_size", "constraints": ["NULLABLE"], "indexed": false },
+        { "name": "sortOrder", "java_type": "Integer", "column_name": "sort_order", "constraints": ["NOT NULL", "default=0"], "indexed": false },
+        { "name": "isVisible", "java_type": "Boolean", "column_name": "is_visible", "constraints": ["NOT NULL", "default=true"], "indexed": false },
+        { "name": "createdAt", "java_type": "OffsetDateTime", "column_name": "created_at", "constraints": ["NOT NULL", "@CreationTimestamp"], "indexed": false },
+        { "name": "updatedAt", "java_type": "OffsetDateTime", "column_name": "updated_at", "constraints": ["@UpdateTimestamp"], "indexed": false }
+      ],
+      "relationships": [
+        { "type": "ManyToOne", "target": "MediaScheme", "join_column": "scheme_id", "fetch": "LAZY" }
+      ],
+      "indexes": [],
+      "unique_constraints": []
+    },
+    {
+      "class_name": "LineUserState",
+      "table_name": "line_user_states",
+      "fields": [
+        { "name": "lineUserId", "java_type": "String", "column_name": "line_user_id", "constraints": ["PK", "length=100"], "indexed": true },
+        { "name": "currentState", "java_type": "LineUserState.State", "column_name": "current_state", "constraints": ["NOT NULL", "varchar(50)", "@Enumerated(STRING)", "default=IDLE"], "indexed": false },
+        { "name": "stateData", "java_type": "Map<String, Object>", "column_name": "state_data", "constraints": ["NULLABLE", "json", "@JdbcTypeCode(JSON)"], "indexed": false },
+        { "name": "updatedAt", "java_type": "OffsetDateTime", "column_name": "updated_at", "constraints": ["@UpdateTimestamp"], "indexed": false }
+      ],
+      "relationships": [],
+      "indexes": [],
+      "unique_constraints": []
+    },
+    {
+      "class_name": "LineUser",
+      "table_name": "line_users",
+      "fields": [
+        { "name": "lineUserId", "java_type": "String", "column_name": "line_user_id", "constraints": ["PK", "length=100"], "indexed": true },
+        { "name": "displayName", "java_type": "String", "column_name": "display_name", "constraints": ["NULLABLE", "length=255"], "indexed": false },
+        { "name": "pictureUrl", "java_type": "String", "column_name": "picture_url", "constraints": ["NULLABLE", "length=500"], "indexed": false },
+        { "name": "language", "java_type": "String", "column_name": "language", "constraints": ["NULLABLE", "length=10"], "indexed": false },
+        { "name": "createdAt", "java_type": "OffsetDateTime", "column_name": "created_at", "constraints": ["NOT NULL", "@CreationTimestamp"], "indexed": false },
+        { "name": "updatedAt", "java_type": "OffsetDateTime", "column_name": "updated_at", "constraints": ["@UpdateTimestamp"], "indexed": false }
+      ],
+      "relationships": [],
+      "indexes": [],
+      "unique_constraints": []
+    }
+  ],
+  "enums": [
+    {
+      "name": "VotingSession.Status",
+      "file_path": "src/main/java/com/wedding/backend/domain/VotingSession.java",
+      "values": [
+        { "name": "WAITING", "extra_fields": {} },
+        { "name": "START", "extra_fields": {} },
+        { "name": "CLOSED", "extra_fields": {} }
+      ],
+      "used_by": ["VotingSession.status"]
+    },
+    {
+      "name": "LineUserState.State",
+      "file_path": "src/main/java/com/wedding/backend/domain/LineUserState.java",
+      "values": [
+        { "name": "IDLE", "extra_fields": {} },
+        { "name": "AWAITING_MESSAGE", "extra_fields": {} },
+        { "name": "AWAITING_VOTE", "extra_fields": {} }
+      ],
+      "used_by": ["LineUserState.currentState"]
+    }
+  ],
+  "schedulers": [],
+  "security": {
+    "auth_type": "none",
+    "notes": "無 Spring Security 設定。Admin API（/admin/**）未設置任何認證保護，依賴網路層或部署層控制。",
+    "url_rules": [],
+    "pre_authorize_usages": [],
+    "roles": [],
+    "custom_annotations": [],
+    "cors": {
+      "allowed_origins": "從 cors.allowed-origins 設定讀取（環境變數 CORS_ALLOWED_ORIGIN_1，預設 http://localhost:3000）",
+      "allowed_methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      "allow_credentials": true
+    }
+  },
+  "error_handling": {
+    "global_handlers": [
+      {
+        "exception_class": "ResourceNotFoundException",
+        "handler_method": "handleResourceNotFound",
+        "http_status": 404,
+        "response_structure": "ApiResponse(success=false, message=錯誤訊息)"
+      },
+      {
+        "exception_class": "BusinessException",
+        "handler_method": "handleBusinessException",
+        "http_status": 400,
+        "response_structure": "ApiResponse(success=false, message=錯誤訊息)"
+      },
+      {
+        "exception_class": "MethodArgumentNotValidException",
+        "handler_method": "handleValidationException",
+        "http_status": 400,
+        "response_structure": "ApiResponse(success=false, message=i18n 'error.validation.failed', data={field: message})"
+      },
+      {
+        "exception_class": "IllegalArgumentException",
+        "handler_method": "handleIllegalArgument",
+        "http_status": 400,
+        "response_structure": "ApiResponse(success=false, message=錯誤訊息)"
+      },
+      {
+        "exception_class": "Exception",
+        "handler_method": "handleGeneralException",
+        "http_status": 500,
+        "response_structure": "ApiResponse(success=false, message=i18n 'error.unexpected')"
+      }
+    ],
+    "custom_exceptions": [
+      { "name": "BusinessException", "parent": "RuntimeException", "fields": ["message"] },
+      { "name": "ResourceNotFoundException", "parent": "RuntimeException", "fields": ["message"] }
+    ],
+    "error_codes": []
+  },
+  "configurations": {
+    "profiles": ["default"],
+    "custom_properties": [
+      { "key": "server.port", "values": { "default": "222" }, "description": "應用程式 HTTP 埠號" },
+      { "key": "line.bot.channel-token", "values": { "default": "${LINE_CHANNEL_ACCESS_TOKEN}" }, "description": "LINE Bot channel access token" },
+      { "key": "line.bot.channel-secret", "values": { "default": "${LINE_CHANNEL_SECRET}" }, "description": "LINE Bot channel secret" },
+      { "key": "line.bot.handler.path", "values": { "default": "/webhook" }, "description": "LINE Webhook 路徑" },
+      { "key": "cloudflare.r2.account-id", "values": { "default": "${R2_ACCOUNT_ID}" }, "description": "Cloudflare R2 帳戶 ID" },
+      { "key": "cloudflare.r2.access-key-id", "values": { "default": "${R2_ACCESS_KEY_ID}" }, "description": "R2 存取金鑰 ID" },
+      { "key": "cloudflare.r2.secret-access-key", "values": { "default": "${R2_SECRET_ACCESS_KEY}" }, "description": "R2 機密存取金鑰" },
+      { "key": "cloudflare.r2.bucket-name", "values": { "default": "${R2_BUCKET_NAME:wedding-media}" }, "description": "R2 Bucket 名稱" },
+      { "key": "cloudflare.r2.public-url", "values": { "default": "${R2_PUBLIC_URL}" }, "description": "R2 公開讀取基礎 URL" },
+      { "key": "cloudflare.r2.presign-expiry-minutes", "values": { "default": "60" }, "description": "Presigned URL 有效期（分鐘）" },
+      { "key": "cors.allowed-origins", "values": { "default": "${CORS_ALLOWED_ORIGIN_1:http://localhost:3000}" }, "description": "CORS 允許的 Origin 清單" },
+      { "key": "spring.datasource.hikari.maximum-pool-size", "values": { "default": "10" }, "description": "DB 連線池最大連線數" },
+      { "key": "spring.jpa.hibernate.ddl-auto", "values": { "default": "validate" }, "description": "Hibernate DDL 模式" },
+      { "key": "spring.flyway.baseline-on-migrate", "values": { "default": "true" }, "description": "Flyway baseline 設定（pre-existing schema）" },
+      { "key": "spring.messages.default-locale", "values": { "default": "zh_TW" }, "description": "i18n 預設語系" }
+    ]
+  },
+  "routes": null,
+  "components": null,
+  "stores": null,
+  "form_validations": null,
+  "i18n": {
+    "strategy": "AcceptHeaderLocaleResolver + MessageSource",
+    "default_locale": "zh_TW",
+    "supported_locales": ["zh_TW", "en"],
+    "files": ["src/main/resources/i18n/messages.properties", "src/main/resources/i18n/messages_zh_TW.properties"],
+    "notes": "LINE Bot 回覆語言由 LineUserState.stateData['locale'] 決定，Chinese keyword → Locale.TAIWAN，English keyword → Locale.ENGLISH"
+  }
+}
