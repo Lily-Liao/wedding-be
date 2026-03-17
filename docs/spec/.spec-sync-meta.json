@@ -1,7 +1,7 @@
 {
   "source": "spec-repo",
   "source_path": "backend/wedding-backend/spec-backend.md",
-  "synced_version": "1.0.0",
+  "synced_version": "1.0.1",
   "synced_at": "2026-03-18",
   "note": "此檔案由 Spec Repo 同步而來，請勿手動修改。要修改 spec 請走 changeset 流程。"
 }
