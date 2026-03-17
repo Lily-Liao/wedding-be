@@ -1,3 +1,7 @@
+<!-- ⚠️ 此檔案是從 Spec Repo 同步的唯讀快照，請勿直接修改。
+     要修改 spec 請在 .spec-changes/ 建立 changeset。
+     正本位置：spec-repo/backend/wedding-backend/spec-backend.md -->
+
 # wedding-backend 後端技術規格書
 
 <!--
@@ -6,9 +10,9 @@ module: wedding-backend
 type: backend-tech
 version: 1.0.0
 last_updated: 2026-03-18
-owner: [待補充]
+owner: Lily Liao
 audience: technical
-repo: [待補充]
+repo: wedding-be
 related_services: LINE Messaging API, Cloudflare R2, React Frontend
 tags: wedding, line-bot, voting, lucky-draw, media, websocket
 -->
@@ -17,14 +21,14 @@ tags: wedding, line-bot, voting, lucky-draw, media, websocket
 
 ## 文件資訊
 
-| 欄位 | 說明 |
-|------|------|
+| 欄位 | 說明              |
+|------|-----------------|
 | 微服務名稱 | wedding-backend |
-| 負責人 | [待補充] |
-| 最後更新日期 | 2026-03-18 |
-| 版本 | 1.0.0 |
-| Git Repository | [待補充] |
-| 部署位置 | [待補充] |
+| 負責人 | Lily Liao       |
+| 最後更新日期 | 2026-03-18      |
+| 版本 | 1.0.0           |
+| Git Repository | wedding-be      |
+| 部署位置 | local           |
 
 ---
 
@@ -50,7 +54,7 @@ tags: wedding, line-bot, voting, lucky-draw, media, websocket
 - 前端展示邏輯 → React Frontend
 - LINE 用戶身份驗證 → LINE Platform
 - 媒體檔案儲存 → Cloudflare R2
-- 婚禮照片精選集 → [待補充：HighlightService 的照片來源]
+- 婚禮照片精選集 → Google Drive(TBC: change to cloudflare r2)
 
 ### 1.3 架構位置
 
@@ -179,7 +183,7 @@ LINE Platform (Webhook)          React Frontend
 **業務驗證規則：**
 - `WAITING → START`：允許
 - `START → CLOSED`：允許
-- 其他轉換：[待補充：目前 code 行為]
+- 其他轉換：No
 
 ---
 
@@ -248,7 +252,7 @@ LINE Platform (Webhook)          React Frontend
 ```
 
 **業務驗證規則：**
-- 抽獎池為空時：[待補充：拋出何種錯誤]
+- 抽獎池為空時：No
 
 ---
 
@@ -655,7 +659,7 @@ LINE Webhook 事件透過 LINE SDK 的 `/webhook` 路徑接收，由 `LineWebhoo
 - **認證方式：** Access Key ID + Secret Access Key
 - **Presigned URL 有效期：** 60 分鐘（`presign-expiry-minutes: 60`）
 - **Public URL：** `r2Properties.publicUrl + "/" + fileKey`（需 Bucket 開啟 Public Access）
-- **降級策略：** [待補充]
+- **降級策略：** No
 
 ---
 
@@ -703,7 +707,7 @@ LINE Webhook 事件透過 LINE SDK 的 `/webhook` 路徑接收，由 `LineWebhoo
 ### 11.2 授權模型
 
 - **授權方式：** 無（程式碼層無 RBAC/ABAC）
-- **實際權限控制：** [待補充：部署環境的網路層如何隔離 /admin/** 路由]
+- **實際權限控制：** No
 
 ---
 
@@ -711,11 +715,11 @@ LINE Webhook 事件透過 LINE SDK 的 `/webhook` 路徑接收，由 `LineWebhoo
 
 ### 12.1 效能基準
 
-[待補充：無實際測量數據]
+[無實際測量數據]
 
 ### 12.2 監控告警
 
-[待補充：無監控系統設定]
+[無監控系統設定]
 
 ### 12.3 Log 規範
 
@@ -762,19 +766,19 @@ mvn spring-boot:run
 
 ### 13.2 環境差異
 
-| 設定項目 | Development | Production |
-|---------|-------------|------------|
-| server.port | 222 | [待補充] |
-| DB host | localhost:3306 | [待補充] |
-| CORS origins | http://localhost:3000 | [待補充] |
-| LINE credentials | 測試用 channel | 正式 channel |
-| R2 bucket | [待補充] | [待補充] |
+| 設定項目 | Development           | Production |
+|---------|-----------------------|------------|
+| server.port | 222                   | **         |
+| DB host | localhost:3306        | **         |
+| CORS origins | http://localhost:3000 | **         |
+| LINE credentials | 測試用 channel           | 正式 channel |
+| R2 bucket | **                    | **         |
 
 ### 13.3 測試策略
 
 | 測試類型 | 覆蓋範圍 | 工具 | 覆蓋率要求 | 執行時機 |
-|---------|---------|------|-----------|---------|
-| 單元測試 | [待補充] | JUnit 5 + Mockito | [待補充] | mvn test |
+|---------|------|------|-------|---------|
+| 單元測試 | No   | JUnit 5 + Mockito | No    | mvn test |
 
 ### 13.4 部署流程
 
