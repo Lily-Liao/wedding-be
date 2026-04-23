@@ -29,7 +29,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **逐步確認**：每個 skill 結束後等使用者說「繼續」再推進
 - **自動推進**：做完一步直接下一步，只在關鍵點暫停
 
-> **注意：三步確認階段只問以上三件事。** 不要在確認階段詢問可選步驟（如 `jira:fetch`、`git:sync`、`environment:check`），這些屬於下方執行階段，進入執行時再依序詢問。
+> **注意：三步確認階段只問以上三件事。** 不要在確認階段詢問可選步驟（如 `jira:fetch`、`environment:check`），這些屬於下方執行階段，進入執行時再依序詢問。
 
 ### 核心流程
 
@@ -39,10 +39,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 [environment:check]
 
 **小型：**
-[jira:fetch] -> superpowers:brainstorming -> opsx:ff → opsx:apply → [code:review-spec] → [simplify] → superpowers:verification-before-completion → opsx:verify → opsx:archive
+[jira:fetch] -> superpowers:brainstorming -> opsx:ff → opsx:apply → [simplify] → superpowers:verification-before-completion → opsx:verify → opsx:archive
 
 **大型：**
-[jira:fetch] -> superpowers:brainstorming -> opsx:new → opsx:continue（重複）→ superpowers:writing-plans → opsx:apply → [code:review-spec] → [simplify] → superpowers:verification-before-completion → opsx:verify → opsx:archive
+[jira:fetch] -> superpowers:brainstorming -> opsx:new → opsx:continue（重複）→ superpowers:writing-plans → opsx:apply → [simplify] → superpowers:verification-before-completion → opsx:verify → opsx:archive
 
 ## Commands
 
